@@ -1,0 +1,52 @@
+<!-- <nb-card>  
+    <nb-card-body>
+      <ng2-smart-table [settings]="settings" [source]="source" (createConfirm)="onCreateConfirm($event)"  >
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card> -->
+
+
+  <table class="styled-table">
+    <thead>
+        <tr>
+            <th>Mã Sản Phẩm</th>
+            <th>Loại Máy</th>
+            <th>Đời Máy</th>
+            <th>Màn Hình</th>
+            <th>Chip</th>
+            <th>Tần Số</th>
+            <th>Ram</th>
+            <th>Ổ Cứng</th>
+            <th>Nhóm</th>
+            <th *ngIf="role!='admin'">Giá Tiền</th>
+            <th *ngIf="role=='admin'">Giá Tiền 1</th>
+            <th *ngIf="role=='admin'">Giá Tiền 2</th>
+            <th *ngIf="role=='admin'">Giá Tiền 3</th>
+            <th>Chi Tiết</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr *ngFor="let sanpham of sanphams" >
+            <td>{{sanpham.masanpham}}</td>
+            <td>{{sanpham.loaimay}}</td>
+            <td>{{sanpham.doimay}}</td>
+            <td>{{sanpham.manhinh}}</td>
+            <td>{{sanpham.chip}}</td>
+            <td>{{sanpham.tanso}}</td>
+            <td>{{sanpham.ram}}</td>
+            <td>{{sanpham.ocung}}</td>
+            <td>{{sanpham.nhom}}</td>
+            <td *ngIf="sanpham.gia1">{{sanpham.gia1}}</td>
+            <td *ngIf="!sanpham.gia1 && role=='admin'">0</td>
+            <td *ngIf="sanpham.gia2">{{sanpham.gia2}}</td>
+            <td *ngIf="!sanpham.gia2 && role=='admin'">0</td>
+            <td *ngIf="sanpham.gia3">{{sanpham.gia3}}</td>
+            <td *ngIf="!sanpham.gia3 && role=='admin'">0</td>
+            <td>{{sanpham.chitiet}}</td>
+            <td><i class="fa fa-shopping-cart" style="font-size:18px;color:cornflowerblue;" (click)="click(sanpham)"></i></td>
+        </tr>
+      
+        <!-- and so on... -->
+    </tbody>
+</table>

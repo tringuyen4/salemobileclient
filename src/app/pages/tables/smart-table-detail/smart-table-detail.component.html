@@ -1,0 +1,27 @@
+<nb-card>
+
+
+    <nb-card-body>
+        <div *ngFor="let sanpham of sanphams">
+            <div
+                style="display: flex; background-color: #809ffc; margin-top: 15px; color: white;   padding: 12px 15px; border-radius: 10px;">
+                <a routerLink="/pages/tables/smart-table-don-hang-dang-xu-ly-admin"><b style="margin-right: 10px;">-</b> Mã Đơn Hàng: <b
+                    style="margin-right: 15px;">{{sanpham.madonhang}}</b> - Khách Hàng: <b
+                    style="margin-right: 15px;">{{sanpham.tenkhachhang}}</b> - Ngày Tháng: <b
+                    style="margin-right: 15px;">{{sanpham.ngaythang.substring(0,10)}} </b></a>
+            </div>
+
+
+            <br />
+            <div>
+                <ng2-smart-table [settings]="settings" [source]="source" (createConfirm)="onCreateConfirm($event)"
+                    (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onSaveConfirm($event)">
+                </ng2-smart-table>
+            </div>
+            <div style="display: flex;" *ngIf="sanpham.trangthaidonhang=='dangxuly'">
+                <button class="snip1475" (click)="huy()">Hủy</button>
+                <button class="snip1457" (click)="dongy()">Đồng Ý</button>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>
