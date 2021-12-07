@@ -5,9 +5,9 @@
         <div *ngFor="let sanpham of sanphams">
             <div
                 style="display: flex;; margin-top: 15px; color: #809ffc;  ">
-                <b style="margin-right: 10px;">-</b> Mã Đơn Hàng: <b
+                <a routerLink="/pages/tables/smart-table-don-hang-dang-xu-ly-nguoi-mua" style="text-decoration: none !important;"> <b style="margin-right: 10px;">-</b> Mã Đơn Hàng: <b
                     style="margin-right: 15px;">{{sanpham.madonhang}}</b>  - Ngày Tháng: <b
-                    style="margin-right: 15px;">{{sanpham.ngaythang.substring(0,10)}} </b>
+                    style="margin-right: 15px;">{{sanpham.ngaythang.substring(0,10)}} </b></a>
                     
             </div>
 

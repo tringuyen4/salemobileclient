@@ -18,24 +18,25 @@ export class SmartTableSanPhamComponent implements OnInit {
   dataocung = []
   sanphams = []
   role = ''
-  gia =''
+  gia = ''
+  danhsachdonhangtam = []
   constructor(private service: NetworkserviceService) {
     this.role = localStorage.getItem('role')
     this.service.getquanlymay().subscribe(val => {
       // this.source.load(val)
       if (localStorage.getItem('role') == 'dailycap1') {
         const newArray = val.map(({ gia2, gia3, ...keepAttrs }) => keepAttrs)
-        this.sanphams = newArray
+        this.sanphams = newArray.filter(val=>val.trangthai == '')
         console.log(this.sanphams)
       }
       if (localStorage.getItem('role') == 'dailycap2') {
         const newArray = val.map(({ gia1, gia3, ...keepAttrs }) => keepAttrs)
-        this.sanphams = newArray
+        this.sanphams = newArray.filter(val=>val.trangthai == '')
         console.log(this.sanphams)
       }
       if (localStorage.getItem('role') == null) {
         const newArray = val.map(({ gia1, gia2, ...keepAttrs }) => keepAttrs)
-        this.sanphams = newArray
+        this.sanphams = newArray.filter(val=>val.trangthai == '')
         console.log(this.sanphams)
       }
       if (localStorage.getItem('role') == 'admin') {
@@ -59,26 +60,34 @@ export class SmartTableSanPhamComponent implements OnInit {
 
 
   click(item) {
-    if(localStorage.getItem('role')=='dailycap1'){
+
+    if (localStorage.getItem('role') == 'dailycap1') {
       this.gia = item.gia1
     }
-    if(localStorage.getItem('role')=='dailycap2'){
+    if (localStorage.getItem('role') == 'dailycap2') {
       this.gia = item.gia2
     }
-    this.service.danhsachdonhangtemp(
-      [
-        item.loaimay, item.doimay, item.manhinh, item.chip, item.tanso, item.ram, item.ocung, item.nhom, this.gia, '0',
-        localStorage.getItem('sodienthoai'),localStorage.getItem('hoten'),'',
-        new Date(),item.masanpham,item.imei
-      ]
-    )
-      .subscribe(data => {
-alert("Sản phẩm đã được thêm vào giỏ hàng của bạn")
-        console.log("POST Request is successful ", data);
-      },
-        error => {
-          console.log("Error", error);
+    if (!this.danhsachdonhangtam.includes(item.masanpham)) {
+      this.danhsachdonhangtam.push(item.masanpham)
+      this.service.danhsachdonhangtemp(
+        [
+          item.loaimay, item.doimay, item.manhinh, item.chip, item.tanso, item.ram, item.ocung, item.nhom, this.gia, '0',
+          localStorage.getItem('sodienthoai'), localStorage.getItem('hoten'), '',
+          new Date(), item.masanpham, item.imei
+        ]
+      )
+        .subscribe(data => {
+          alert("Sản phẩm đã được thêm vào giỏ hàng của bạn")
+          console.log("POST Request is successful ", data);
+        },
+          error => {
+            console.log("Error", error);
 
-        })
+          })
+    }
+    else {
+      alert("Sản phẩm vừa rồi đã được chọn")
+    }
   }
+
 }

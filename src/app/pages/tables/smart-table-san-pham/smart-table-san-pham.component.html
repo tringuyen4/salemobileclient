@@ -23,7 +23,9 @@
             <th *ngIf="role=='admin'">Giá Tiền 2</th>
             <th *ngIf="role=='admin'">Giá Tiền 3</th>
             <th>Chi Tiết</th>
-            <th></th>
+            <th>Màu Sắc</th>
+            <th *ngIf="role=='dailycap1'||role=='dailycap2'"></th>
+            <th *ngIf="role=='admin'">Khách Hàng Đã Mua</th>
         </tr>
     </thead>
     <tbody>
@@ -44,7 +46,9 @@
             <td *ngIf="sanpham.gia3">{{sanpham.gia3}}</td>
             <td *ngIf="!sanpham.gia3 && role=='admin'">0</td>
             <td>{{sanpham.chitiet}}</td>
-            <td><i class="fa fa-shopping-cart" style="font-size:18px;color:cornflowerblue;" (click)="click(sanpham)"></i></td>
+            <td>{{sanpham.mausac}}</td>
+            <td *ngIf="role=='admin'">{{sanpham.trangthai}}</td>
+            <td *ngIf="role=='dailycap1'||role=='dailycap2'"><i class="fa fa-shopping-cart" style="font-size:18px;color:cornflowerblue;" (click)="click(sanpham)"></i></td>
         </tr>
       
         <!-- and so on... -->

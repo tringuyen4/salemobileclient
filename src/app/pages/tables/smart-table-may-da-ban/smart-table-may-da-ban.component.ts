@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { SmartTableData } from '../../../@core/data/smart-table';
 import { NetworkserviceService } from '../../../services/networkservice.service';
 
 @Component({
-  selector: 'ngx-smart-table-may',
-  templateUrl: './smart-table-may.component.html',
-  styleUrls: ['./smart-table-may.component.scss']
+  selector: 'ngx-smart-table-may-da-ban',
+  templateUrl: './smart-table-may-da-ban.component.html',
+  styleUrls: ['./smart-table-may-da-ban.component.scss']
 })
-export class SmartTableMayComponent implements OnInit {
+export class SmartTableMayDaBanComponent implements OnInit {
 
   source: LocalDataSource = new LocalDataSource();
   datachip = []
@@ -20,7 +19,7 @@ export class SmartTableMayComponent implements OnInit {
   data
   constructor(private service: NetworkserviceService) {
     this.service.getquanlymay().subscribe(val => {
-      this.source.load(val.filter(val=>val.trangthai==''))
+      this.source.load(val.filter(val=>val.trangthai!=''))
       this.data = val
     });
     this.service.getdoimay().subscribe(val => {
@@ -75,7 +74,7 @@ export class SmartTableMayComponent implements OnInit {
 
 
   settings = {
-    actions: { columnTitle: '', position: 'right' },
+    actions: false,
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark" (click)="onClick()"></i>',
@@ -201,7 +200,10 @@ export class SmartTableMayComponent implements OnInit {
         title: 'Chi Tiết',
         type: 'string'
       },
-      
+      trangthai: {
+        title: 'Tên Người Mua',
+        type: 'string'
+      },
     },
 
     edit: {

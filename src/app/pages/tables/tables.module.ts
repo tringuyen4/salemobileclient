@@ -25,6 +25,9 @@ import { SmartTableDonHangDangXuLyNguoiMuaComponent } from './smart-table-don-ha
 import { SmartTableDonHangDangXuLyAdminComponent } from './smart-table-don-hang-dang-xu-ly-admin/smart-table-don-hang-dang-xu-ly-admin.component';
 import { SmartTableDetailComponent } from './smart-table-detail/smart-table-detail.component';
 import { SmartTableDetailNguoiDungComponent } from './smart-table-detail-nguoi-dung/smart-table-detail-nguoi-dung.component';
+import { SmartTableDonHangCuDetailComponent } from './smart-table-don-hang-cu-detail/smart-table-don-hang-cu-detail.component';
+import { SmartTableTaoDonHangChoDaiLyComponent } from './smart-table-tao-don-hang-cho-dai-ly/smart-table-tao-don-hang-cho-dai-ly.component';
+import { SmartTableMayDaBanComponent } from './smart-table-may-da-ban/smart-table-may-da-ban.component';
 
 @NgModule({
   imports: [
@@ -60,6 +63,9 @@ import { SmartTableDetailNguoiDungComponent } from './smart-table-detail-nguoi-d
     SmartTableDonHangDangXuLyAdminComponent,
     SmartTableDetailComponent,
     SmartTableDetailNguoiDungComponent,
+    SmartTableDonHangCuDetailComponent,
+    SmartTableTaoDonHangChoDaiLyComponent,
+    SmartTableMayDaBanComponent,
   ],
 })
 export class TablesModule { }

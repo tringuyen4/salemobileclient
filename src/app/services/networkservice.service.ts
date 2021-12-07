@@ -19,7 +19,7 @@ export class NetworkserviceService {
       icon: 'shopping-cart-outline',
       link: '/pages/tables/smart-table-san-pham',
       home: true,
-    
+      hidden: localStorage.getItem('role') == 'admin'
       // children: [
       //   {
       //     title: 'Stepper',
@@ -265,6 +265,10 @@ export class NetworkserviceService {
         //   link: '/pages/tables/smart-table',
         // },
         {
+          title: 'Tạo Đơn Hàng Cho Đại Lý',
+          link: '/pages/tables/smart-table-tao-don-hang-cho-dai-ly',
+        },
+        {
           title: 'Danh Sách Đơn Hàng Chờ Xử Lý',
           link: '/pages/tables/smart-table-don-hang-dang-xu-ly-admin',
         },
@@ -347,7 +351,10 @@ export class NetworkserviceService {
           title: 'Quản Lý Máy',
           link: '/pages/tables/smart-table-may',
         },
-  
+        {
+          title: 'Quản Lý Máy Đã Bán',
+          link: '/pages/tables/smart-table-may-da-ban',
+        },
   
       ],
     },
@@ -481,6 +488,10 @@ export class NetworkserviceService {
     const userAPI = `https://salemobileserver.herokuapp.com/deletedanhsachdonhangsanphamreal`;
     return this.httpClient.post<any>(userAPI, data, this.httpOptions)
   }
+  getquanlymaytheomasanpham(data): Observable<any> {
+    const userAPI = `https://salemobileserver.herokuapp.com/getquanlymaytheomasanpham`;
+    return this.httpClient.post<any>(userAPI, data, this.httpOptions)
+  }
   getloaimay() {
     const get = 'https://salemobileserver.herokuapp.com/getloaimay';
     return this.httpClient.get<any>(get);
@@ -511,6 +522,10 @@ export class NetworkserviceService {
   }
   getdanhsachdonhang() {
     const get = 'https://salemobileserver.herokuapp.com/getdanhsachdonhang';
+    return this.httpClient.get<any>(get);
+  }
+  getdanhsachdonhangtemp() {
+    const get = 'https://salemobileserver.herokuapp.com/getdanhsachdonhangtemp';
     return this.httpClient.get<any>(get);
   }
   getalluser() {
@@ -568,6 +583,10 @@ export class NetworkserviceService {
   }
   updatetrangthaidonhang(data): Observable<any> {
     const API = `https://salemobileserver.herokuapp.com/updatetrangthaidonhang`;
+    return this.httpClient.put<any>(API, data, this.httpOptions)
+  }
+  updatequanlymaynguoimua(data): Observable<any> {
+    const API = `https://salemobileserver.herokuapp.com/updatequanlymaynguoimua`;
     return this.httpClient.put<any>(API, data, this.httpOptions)
   }
 }

@@ -9,6 +9,7 @@ import { NetworkserviceService } from '../../../services/networkservice.service'
   styleUrls: ['./smart-table-detail.component.scss']
 })
 export class SmartTableDetailComponent implements OnInit {
+  masanphammoi=""
   source: LocalDataSource = new LocalDataSource();
   data
   constructor(private route: ActivatedRoute, private service: NetworkserviceService, private router: Router) { }
@@ -35,22 +36,25 @@ export class SmartTableDetailComponent implements OnInit {
 
 
   settings = {
-    actions: { columnTitle: '', position: 'right' },
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark" (click)="onClick()"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmCreate: true,
-    },
+    actions: { columnTitle: '', position: 'right', edit:false, add:false },
+    // add: {
+    //   addButtonContent: '<i class="nb-plus"></i>',
+    //   createButtonContent: '<i class="nb-checkmark" (click)="onClick()"></i>',
+    //   cancelButtonContent: '<i class="nb-close"></i>',
+    //   confirmCreate: true,
+    // },
 
     columns: {
+      
       masanpham: {
         title: 'Mã Sản Phẩm',
         type: 'string',
-        width: '300px'
+        width: '300px',
+        filter: false,
       },
       loaimay: {
         title: 'Loại Máy',
+        filter: false,
         editor: {
           type: 'list',
           config: {
@@ -63,6 +67,7 @@ export class SmartTableDetailComponent implements OnInit {
       },
       doimay: {
         title: 'Đời Máy',
+        filter: false,
         editor: {
           type: 'list',
           config: {
@@ -76,6 +81,7 @@ export class SmartTableDetailComponent implements OnInit {
       },
       manhinh: {
         title: 'Màn Hình',
+        filter: false,
         editor: {
           type: 'list',
           config: {
@@ -87,6 +93,7 @@ export class SmartTableDetailComponent implements OnInit {
       },
       chip: {
         title: 'Chip',
+        filter: false,
         editor: {
           type: 'list',
           config: {
@@ -97,10 +104,12 @@ export class SmartTableDetailComponent implements OnInit {
         },
       },
       tanso: {
+        filter: false,
         title: 'Tần số',
         type: 'string'
       },
       ram: {
+        filter: false,
         title: 'Ram',
         editor: {
           type: 'list',
@@ -112,6 +121,7 @@ export class SmartTableDetailComponent implements OnInit {
         },
       },
       ocung: {
+        filter: false,
         title: 'Ổ cứng',
         editor: {
           type: 'list',
@@ -123,6 +133,7 @@ export class SmartTableDetailComponent implements OnInit {
         },
       },
       nhom: {
+        filter: false,
         title: 'Nhóm',
         editor: {
           type: 'list',
@@ -138,25 +149,28 @@ export class SmartTableDetailComponent implements OnInit {
         },
       },
       imei: {
+        filter: false,
         title: 'IMEI',
         type: 'string'
       },
       gia: {
+        filter: false,
         title: 'Giá',
         type: 'string'
       },
       chitiet: {
+        filter: false,
         title: 'Chi Tiết',
         type: 'string'
       },
     },
-
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmSave: true,
-    },
+// edit:false,
+    // edit: {
+    //   editButtonContent: '<i class="nb-edit"></i>',
+    //   saveButtonContent: '<i class="nb-checkmark"></i>',
+    //   cancelButtonContent: '<i class="nb-close"></i>',
+    //   confirmSave: true,
+    // },
     delete: {
       deleteButtonContent: '<i class="nb-trash"></i>',
       confirmDelete: true,
@@ -226,55 +240,55 @@ export class SmartTableDetailComponent implements OnInit {
       event.confirm.reject();
     }
   }
-  onSaveConfirm(event) {
-    if (window.confirm('Bạn có muốn thay đổi không?')) {
-      this.service.deletedanhsachdonhangsanphamreal(
-        [
-          this.madonhangparam,
-          event['data']['masanpham']
-        ]
-      )
-        .subscribe(data => {
+  // onSaveConfirm(event) {
+  //   if (window.confirm('Bạn có muốn thay đổi không?')) {
+  //     this.service.deletedanhsachdonhangsanphamreal(
+  //       [
+  //         this.madonhangparam,
+  //         event['data']['masanpham']
+  //       ]
+  //     )
+  //       .subscribe(data => {
 
-          console.log("POST Request is successful ", data);
-          this.service.danhsachdonhang(
-            [
-              event['newData']['loaimay'],
-              event['newData']['doimay'],
-              event['newData']['manhinh'],
-              event['newData']['chip'],
-              event['newData']['tanso'],
-              event['newData']['ram'],
-              event['newData']['ocung'],
-              event['newData']['nhom'],
-              event['newData']['gia'],
-              '',
-              localStorage.getItem('sodienthoai'),
-              localStorage.getItem('hoten'),
-              'dangxuly',
-              new Date(),
-              event['newData']['masanpham'],
-              this.madonhangparam,
-              event['newData']['imei']
-            ]
-          )
-            .subscribe(data => {
+  //         console.log("POST Request is successful ", data);
+  //         this.service.danhsachdonhang(
+  //           [
+  //             event['newData']['loaimay'],
+  //             event['newData']['doimay'],
+  //             event['newData']['manhinh'],
+  //             event['newData']['chip'],
+  //             event['newData']['tanso'],
+  //             event['newData']['ram'],
+  //             event['newData']['ocung'],
+  //             event['newData']['nhom'],
+  //             event['newData']['gia'],
+  //             '',
+  //             localStorage.getItem('sodienthoai'),
+  //             localStorage.getItem('hoten'),
+  //             'dangxuly',
+  //             new Date(),
+  //             event['newData']['masanpham'],
+  //             this.madonhangparam,
+  //             event['newData']['imei']
+  //           ]
+  //         )
+  //           .subscribe(data => {
 
-              console.log("POST Request is successful ", data);
-            },
-              error => {
-                console.log("Error", error);
+  //             console.log("POST Request is successful ", data);
+  //           },
+  //             error => {
+  //               console.log("Error", error);
 
-              })
-        },
-          error => {
-            console.log("Error", error);
+  //             })
+  //       },
+  //         error => {
+  //           console.log("Error", error);
 
-          })
-    } else {
-      event.confirm.reject();
-    }
-  }
+  //         })
+  //   } else {
+  //     event.confirm.reject();
+  //   }
+  // }
 
 
 
@@ -297,6 +311,16 @@ export class SmartTableDetailComponent implements OnInit {
   }
 
   dongy() {
+// this.service.getquanlymay().subscribe(data => {
+  
+//   console.log("POST Request is successful ", data);
+// },
+//   error => {
+//     console.log("Error", error);
+
+//   })
+
+
 
     this.service.updatetrangthaidonhang(
       [
@@ -307,9 +331,9 @@ export class SmartTableDetailComponent implements OnInit {
       .subscribe(data => {
         alert("Đơn Hàng Đã Xử Lý Thành Công")
         this.service.getdanhsachdonhangtheomadonhang([this.madonhangparam]).subscribe(data => {
-          alert("Đơn Hàng Đã Xử Lý Thành Công")
+        
           data.forEach(element => {
-            this.service.deletequanlymay([element.masanpham]).subscribe(val => { console.log("POST Request is successful ", val) })
+            this.service.updatequanlymaynguoimua([element.tenkhachhang,element.masanpham]).subscribe(val => { console.log("POST Request is successful ", val) })
           });
         })
         this.router.navigateByUrl('/smart-table-don-hang-da-xu-ly-thanh-cong')
@@ -321,5 +345,52 @@ export class SmartTableDetailComponent implements OnInit {
         })
 
 
+  }
+
+
+  themsanpham(){
+    this.service.getquanlymaytheomasanpham([this.masanphammoi]).subscribe(data => {
+
+
+
+      this.service.danhsachdonhang([
+        data[0].loaimay,
+        data[0].doimay,
+        data[0].manhinh,
+        data[0].chip,
+        data[0].tanso,
+        data[0].ram,
+        data[0].ocung,
+        data[0].nhom,
+        data[0].gia,
+        data[0].soluong,
+        localStorage.getItem('sodienthoai'),
+        localStorage.getItem('hoten'),
+        'dangxuly',
+        new Date(),
+        data[0].masanpham,
+        this.madonhangparam,
+        data[0].imei 
+      ]).subscribe(data => {
+        this.service.getdanhsachdonhangtheomadonhang([this.madonhangparam]).subscribe(val => {
+        
+          this.source.load(val)
+          console.log(this.sanphams)
+        });
+        console.log("POST Request is successful ", data);
+      },
+        error => {
+          console.log("Error", error);
+
+        })
+
+
+
+      console.log("POST Request is successful ", data);
+    },
+      error => {
+        console.log("Error", error);
+
+      })
   }
 }

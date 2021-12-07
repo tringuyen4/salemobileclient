@@ -23,6 +23,9 @@ import { SmartTableDonHangDangXuLyNguoiMuaComponent } from './smart-table-don-ha
 import { SmartTableDonHangDangXuLyAdminComponent } from './smart-table-don-hang-dang-xu-ly-admin/smart-table-don-hang-dang-xu-ly-admin.component';
 import { SmartTableDetailComponent } from './smart-table-detail/smart-table-detail.component';
 import { SmartTableDetailNguoiDungComponent } from './smart-table-detail-nguoi-dung/smart-table-detail-nguoi-dung.component';
+import { SmartTableDonHangCuDetailComponent } from './smart-table-don-hang-cu-detail/smart-table-don-hang-cu-detail.component';
+import { SmartTableTaoDonHangChoDaiLyComponent } from './smart-table-tao-don-hang-cho-dai-ly/smart-table-tao-don-hang-cho-dai-ly.component';
+import { SmartTableMayDaBanComponent } from './smart-table-may-da-ban/smart-table-may-da-ban.component';
 
 const routes: Routes = [{
   path: '',
@@ -64,10 +67,17 @@ const routes: Routes = [{
       path: 'smart-table-don-hang-dang-xu-ly-admin',
       component: SmartTableDonHangDangXuLyAdminComponent,
     },
-    
+    {
+      path: 'smart-table-tao-don-hang-cho-dai-ly',
+      component: SmartTableTaoDonHangChoDaiLyComponent,
+    },
     {
       path: 'smart-table-detail',
       component: SmartTableDetailComponent,
+    },
+    {
+      path: 'smart-table-don-hang-cu-detail',
+      component: SmartTableDonHangCuDetailComponent,
     },
     {
       path: 'smart-table-detail-nguoi-dung',
@@ -84,6 +94,10 @@ const routes: Routes = [{
     {
       path: 'smart-table-may',
       component: SmartTableMayComponent,
+    },
+    {
+      path: 'smart-table-may-da-ban',
+      component: SmartTableMayDaBanComponent,
     },
     {
       path: 'smart-table-san-pham',
