@@ -18,9 +18,11 @@ export class SmartTableMayComponent implements OnInit {
   dataram = []
   dataocung = []
   data
+  datadaxuly
+  fileToUpload: File | null = null;
   constructor(private service: NetworkserviceService) {
     this.service.getquanlymay().subscribe(val => {
-      this.source.load(val.filter(val=>val.trangthai==''))
+      this.source.load(val.filter(val => val.trangthai == ''))
       this.data = val
     });
     this.service.getdoimay().subscribe(val => {
@@ -201,7 +203,7 @@ export class SmartTableMayComponent implements OnInit {
         title: 'Chi Tiết',
         type: 'string'
       },
-      
+
     },
 
     edit: {
@@ -284,52 +286,157 @@ export class SmartTableMayComponent implements OnInit {
 
 
 
-onSaveConfirm(event) {
-  if (window.confirm('Bạn có muốn thay đổi không?')) {
-    this.service.deletequanlymay(
-      [
-        event['newData']['masanpham'],
-      ]
-    )
-      .subscribe(data => {
+  onSaveConfirm(event) {
+    if (window.confirm('Bạn có muốn thay đổi không?')) {
+      this.service.deletequanlymay(
+        [
+          event['newData']['masanpham'],
+        ]
+      )
+        .subscribe(data => {
 
-        console.log("POST Request is successful ", data);
+          console.log("POST Request is successful ", data);
+          this.service.quanlymay(
+            [
+              event['newData']['loaimay'],
+              event['newData']['doimay'],
+              event['newData']['manhinh'],
+              event['newData']['chip'],
+              event['newData']['tanso'],
+              event['newData']['ram'],
+              event['newData']['ocung'],
+              event['newData']['nhom'],
+              event['newData']['imei'],
+              event['newData']['gia1'],
+              event['newData']['gia2'],
+              event['newData']['gia3'],
+              '',
+              event['newData']['masanpham'],
+              event['newData']['chitiet'],
+              '',
+              event['newData']['mausac'],
+            ]
+          )
+            .subscribe(data => {
+
+              console.log("POST Request is successful ", data);
+            },
+              error => {
+                console.log("Error", error);
+
+              })
+        },
+          error => {
+            console.log("Error", error);
+
+          })
+    } else {
+      event.confirm.reject();
+    }
+  }
+
+
+  handleFileInput(files: FileList) {
+    this.fileToUpload = files.item(0);
+    console.log(this.fileToUpload)
+  }
+
+  taosanpham() {
+    this.datadaxuly.forEach(element => {
+      if (!this.data.some(el => el.masanpham === element.masanpham || el.imei === element.imei)) {
         this.service.quanlymay(
           [
-            event['newData']['loaimay'],
-            event['newData']['doimay'],
-            event['newData']['manhinh'],
-            event['newData']['chip'],
-            event['newData']['tanso'],
-            event['newData']['ram'],
-            event['newData']['ocung'],
-            event['newData']['nhom'],
-            event['newData']['imei'],
-            event['newData']['gia1'],
-            event['newData']['gia2'],
-            event['newData']['gia3'],
+            element.loaimay,
+            element.doimay,
+            element.manhinh,
+            element.chip,
+            element.tanso,
+            element.ram,
+            element.ocung,
+            element.nhom,
+            element.imei,
+            element.gia1,
+            element.gia2,
+            element.gia3,
             '',
-            event['newData']['masanpham'],
-            event['newData']['chitiet'],
+            element.masanpham,
+            element.chitiet,
             '',
-            event['newData']['mausac'],
+            element.mausac,
           ]
         )
           .subscribe(data => {
-
+            this.service.getquanlymay().subscribe(val => {
+              this.source.load(val.filter(val => val.trangthai == ''))
+              this.data = val
+            });
             console.log("POST Request is successful ", data);
           },
             error => {
               console.log("Error", error);
 
             })
-      },
-        error => {
-          console.log("Error", error);
+      }
+      else {
+        alert('Mã sản phẩm '+element.masanpham + ' hoặc imei '+ element.imei + ' đã tồn tại');
+      }
+    });
 
-        })
-  } else {
-    event.confirm.reject();
   }
-}
+
+  uploadExcel(e) {
+
+    try {
+
+      const fileName = e.target.files[0].name;
+
+      import('xlsx').then(xlsx => {
+        let workBook = null;
+        let jsonData = null;
+        const reader = new FileReader();
+        // const file = ev.target.files[0];
+        reader.onload = (event) => {
+          const data = reader.result;
+          workBook = xlsx.read(data, { type: 'binary' });
+          jsonData = workBook.SheetNames.reduce((initial, name) => {
+            const sheet = workBook.Sheets[name];
+            initial[name] = xlsx.utils.sheet_to_json(sheet);
+            return initial;
+          }, {});
+
+          console.log(this.getData(jsonData[Object.keys(jsonData)[0]]));
+          this.datadaxuly = this.getData(jsonData[Object.keys(jsonData)[0]])
+        };
+        reader.readAsBinaryString(e.target.files[0]);
+      });
+
+    } catch (e) {
+      console.log('error', e);
+    }
+  }
+
+
+  getData(input) {
+    var output = [];
+    for (var i = 0; i < input.length; i++) {
+      output.push({
+        'masanpham': input[i]['Mã sản phẩm'],
+        'loaimay': input[i]['Loại máy'],
+        'doimay': input[i]['Đời máy'],
+        'manhinh': input[i]['Màn hình'],
+        'chip': input[i]['Chip'],
+        'tanso': input[i]['Tần số'],
+        'ram': input[i]['Ram'],
+        'ocung': input[i]['Ổ cứng'],
+        'nhom': input[i]['Nhóm'],
+        'imei': input[i]['imei'],
+        'gia1': input[i]['Giá đại lý cấp 1'],
+        'gia2': input[i]['Giá đại lý cấp 2'],
+        'gia3': input[i]['Giá khách lẻ'],
+        'chitiet': input[i]['Chi tiết'],
+        'mausac': input[i]['Màu sắc'],
+      });
+    }
+    return output;
+  }
 }

@@ -9,7 +9,7 @@ import { NetworkserviceService } from '../../../services/networkservice.service'
   styleUrls: ['./smart-table-detail.component.scss']
 })
 export class SmartTableDetailComponent implements OnInit {
-  masanphammoi=""
+  masanphammoi = ""
   source: LocalDataSource = new LocalDataSource();
   data
   constructor(private route: ActivatedRoute, private service: NetworkserviceService, private router: Router) { }
@@ -21,7 +21,7 @@ export class SmartTableDetailComponent implements OnInit {
       .subscribe(params => {
         console.log(params.id[0]); // { orderby: "price" }
         if (params.id[0] == 'D') {
-          this.router.navigateByUrl('/')
+          this.router.navigateByUrl('/pages/tables/smart-table-don-hang-dang-xu-ly-admin')
         }
         this.service.getdanhsachdonhangtheomadonhang([params.id[0]]).subscribe(val => {
           this.sanphams = [...new Map(val.map(item => [item.madonhang, item])).values()]
@@ -36,7 +36,7 @@ export class SmartTableDetailComponent implements OnInit {
 
 
   settings = {
-    actions: { columnTitle: '', position: 'right', edit:false, add:false },
+    actions: { columnTitle: '', position: 'right', edit: false, add: false },
     // add: {
     //   addButtonContent: '<i class="nb-plus"></i>',
     //   createButtonContent: '<i class="nb-checkmark" (click)="onClick()"></i>',
@@ -45,7 +45,7 @@ export class SmartTableDetailComponent implements OnInit {
     // },
 
     columns: {
-      
+
       masanpham: {
         title: 'Mã Sản Phẩm',
         type: 'string',
@@ -164,7 +164,7 @@ export class SmartTableDetailComponent implements OnInit {
         type: 'string'
       },
     },
-// edit:false,
+    // edit:false,
     // edit: {
     //   editButtonContent: '<i class="nb-edit"></i>',
     //   saveButtonContent: '<i class="nb-checkmark"></i>',
@@ -311,44 +311,84 @@ export class SmartTableDetailComponent implements OnInit {
   }
 
   dongy() {
-// this.service.getquanlymay().subscribe(data => {
-  
-//   console.log("POST Request is successful ", data);
-// },
-//   error => {
-//     console.log("Error", error);
+    let daban = false
+    this.service.getquanlymay().subscribe(data => {
+      const arraySanpham = data.filter(data => data.trangthai != '').map(data=>data.masanpham)
+      console.log('test', arraySanpham)
+      this.service.getdanhsachdonhangtheomadonhang([this.madonhangparam]).subscribe(val => {
+        const sanpham = val
+        console.log('test1', val)
+        for (let i = 0; i < sanpham.length; i++) {
+          console.log('testmasanpham',sanpham[i].masanpham,arraySanpham)
+          if (arraySanpham.includes(sanpham[i].masanpham)) {
+            daban = true
+            alert('Sản phẩm ' + sanpham[i].masanpham + ' đã bán. Vui lòng thay thế bằng sản phẩm khác')
+          }
+        }
+        if (daban != true) {
+          this.service.updatetrangthaidonhang(
+            [
+              'thanhcong',
+              this.madonhangparam,
+            ]
+          )
+            .subscribe(data => {
+              alert("Đơn Hàng Đã Xử Lý Thành Công")
+              this.service.getdanhsachdonhangtheomadonhang([this.madonhangparam]).subscribe(data => {
 
-//   })
+                data.forEach(element => {
+                  this.service.updatequanlymaynguoimua([element.tenkhachhang, element.masanpham]).subscribe(val => { console.log("POST Request is successful ", val) })
+                });
+              })
+              this.router.navigateByUrl('/smart-table-don-hang-da-xu-ly-thanh-cong')
+              console.log("POST Request is successful ", data);
+            },
+              error => {
+                console.log("Error", error);
+
+              })
+        }
+      })
+      console.log("POST Request is successful ", data);
+    },
+      error => {
+        console.log("Error", error);
+
+      })
 
 
 
-    this.service.updatetrangthaidonhang(
-      [
-        'thanhcong',
-        this.madonhangparam,
-      ]
-    )
-      .subscribe(data => {
-        alert("Đơn Hàng Đã Xử Lý Thành Công")
-        this.service.getdanhsachdonhangtheomadonhang([this.madonhangparam]).subscribe(data => {
-        
-          data.forEach(element => {
-            this.service.updatequanlymaynguoimua([element.tenkhachhang,element.masanpham]).subscribe(val => { console.log("POST Request is successful ", val) })
-          });
-        })
-        this.router.navigateByUrl('/smart-table-don-hang-da-xu-ly-thanh-cong')
-        console.log("POST Request is successful ", data);
-      },
-        error => {
-          console.log("Error", error);
 
-        })
+
+
+
+    // this.service.updatetrangthaidonhang(
+    //   [
+    //     'thanhcong',
+    //     this.madonhangparam,
+    //   ]
+    // )
+    //   .subscribe(data => {
+    //     alert("Đơn Hàng Đã Xử Lý Thành Công")
+    //     this.service.getdanhsachdonhangtheomadonhang([this.madonhangparam]).subscribe(data => {
+
+    //       data.forEach(element => {
+    //         this.service.updatequanlymaynguoimua([element.tenkhachhang, element.masanpham]).subscribe(val => { console.log("POST Request is successful ", val) })
+    //       });
+    //     })
+    //     this.router.navigateByUrl('/smart-table-don-hang-da-xu-ly-thanh-cong')
+    //     console.log("POST Request is successful ", data);
+    //   },
+    //     error => {
+    //       console.log("Error", error);
+
+    //     })
 
 
   }
 
 
-  themsanpham(){
+  themsanpham() {
     this.service.getquanlymaytheomasanpham([this.masanphammoi]).subscribe(data => {
 
 
@@ -370,10 +410,10 @@ export class SmartTableDetailComponent implements OnInit {
         new Date(),
         data[0].masanpham,
         this.madonhangparam,
-        data[0].imei 
+        data[0].imei
       ]).subscribe(data => {
         this.service.getdanhsachdonhangtheomadonhang([this.madonhangparam]).subscribe(val => {
-        
+
           this.source.load(val)
           console.log(this.sanphams)
         });
